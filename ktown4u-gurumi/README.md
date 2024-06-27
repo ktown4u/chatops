@@ -64,6 +64,11 @@ $ sls deploy
 
 ## Slack Test
 
+- `An error occurred (AccessDeniedException) when calling the InvokeModel operation: You don't have access to the model with the specified model ID.` 에러 발생시
+  - us-east-1 리전에서, bedrock 서비스 활성화 필요.
+- `An error occurred (AccessDeniedException) when calling the InvokeModel operation: Your account does not have an agreement to this model.` 에러 발생시
+  - .env 파일에서 지정한 BedRock 모델 활성화 필요 (5분 정도 소요됨)
+
 ```bash
 curl -X POST -H "Content-Type: application/json" \
 -d " \
