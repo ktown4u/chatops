@@ -22,13 +22,13 @@ data "aws_iam_policy_document" "scale-event-dynamodb-table-policy" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["arn:aws:iam::372383439276:root"]
+      identifiers = ["arn:aws:iam::170023315897:root"]
     }
     actions = [
       "dynamodb:PutItem"
     ]
     resources = [
-      "arn:aws:dynamodb:ap-northeast-2:372383439276:table/ktown4u-scale-event"
+      "arn:aws:dynamodb:ap-northeast-2:170023315897:table/ktown4u-scale-event"
     ]
   }
 }

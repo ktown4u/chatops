@@ -4,7 +4,8 @@
 
 - 환경 변수 변경
 - aws profile 변경
--
+- dynamodb resource based policy 변경
+- variables, db cluster identifier 변경
 
 ## ToDo List
 

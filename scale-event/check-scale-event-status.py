@@ -20,7 +20,7 @@ event example
         'dynamodb': {
             'ApproximateCreationDateTime': 1719389631.0, 
             'Keys': {
-                'request_user': {'S': 'gkr5623'}, 
+                'request_user': {'S': 'kyungyeol.gu'}, 
                 'request_id': {'S': 'd3e69831-a638-447d-8074-5c3603f6510f'}
             }, 
             'NewImage': {
@@ -28,7 +28,7 @@ event example
                 'datetime': {'S': '2024-06-26 17:13:50.037461'}, 
                 'request_channel_name': {'S': 'chatops'}, 
                 'request_type': {'S': 'scale-out'}, 
-                'request_user': {'S': 'gkr5623'}, 
+                'request_user': {'S': 'kyungyeol.gu'}, 
                 'rds_asg_status': {'S': 'pending'}, 
                 'helm_status': {'S': 'pending'}, 
                 'request_id': {'S': 'd3e69831-a638-447d-8074-5c3603f6510f'}
@@ -37,7 +37,7 @@ event example
             'SizeBytes': 272, 
             'StreamViewType': 'NEW_AND_OLD_IMAGES'
         }, 
-        'eventSourceARN': 'arn:aws:dynamodb:ap-northeast-2:372383439276:table/ktown4u-scale-event/stream/2024-06-26T07:09:02.314'
+        'eventSourceARN': 'arn:aws:dynamodb:ap-northeast-2:170023315897:table/ktown4u-scale-event/stream/2024-06-26T07:09:02.314'
     }
 ]}
 """
