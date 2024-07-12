@@ -1,0 +1,72 @@
+{
+  "version": "0",
+  "id": "db72b5cf-442f-0139-7008-0055ada64bea",
+  "detail-type": "AWS API Call via CloudTrail",
+  "source": "aws.sts",
+  "account": "170023315897",
+  "time": "2024-07-12T04:51:40Z",
+  "region": "us-east-1",
+  "resources": [],
+  "detail": {
+    "eventVersion": "1.08",
+    "userIdentity": {
+      "type": "SAMLUser",
+      "principalId": "v/cMotM6T9afoI5tWd6a5os43ng=:G-2237c10c-15fc-4e50-93b1-a773ac8a119d",
+      "userName": "G-2237c10c-15fc-4e50-93b1-a773ac8a119d",
+      "identityProvider": "v/cMotM6T9afoI5tWd6a5os43ng="
+    },
+    "eventTime": "2024-07-12T04:51:40Z",
+    "eventSource": "sts.amazonaws.com",
+    "eventName": "AssumeRoleWithSAML",
+    "awsRegion": "global",
+    "sourceIPAddress": "211.214.198.11",
+    "userAgent": "aws-sdk-go/1.51.7 (go1.22.1; darwin; arm64)",
+    "requestParameters": {
+      "sAMLAssertionID": "ID_76d222bd-31e0-4908-b82f-e428326fd17a",
+      "roleSessionName": "kyungyeol",
+      "roleArn": "arn:aws:iam::170023315897:role/keycloak-admin",
+      "principalArn": "arn:aws:iam::170023315897:saml-provider/keycloak",
+      "durationSeconds": 32400
+    },
+    "responseElements": {
+      "credentials": {
+        "accessKeyId": "ASIASPFRN5G42AGB2QUY",
+        "sessionToken": "FwoGZXIvYXdzELb//////////wEaDO3gkCiOtbSZlwjT2SLrAdHoIxYiC6g6cAkhrdu2fsyghM2D5RCfhVtSuZfzwVlnJM5H3R4MHGEOC5Wb6D188lrPmzEeR2l5y2IALAf45cgSjoISNJvwc4wlCaez4YMzL3bVA5d1lg0TK7UiwtxeCsgEthfxlTAz++WkrAVfpRihhaqi6shckE343ds0bCE8GuvX+cMsQVdlkeMjL/ICYUxbyItpY5SKU8BInKCgrffGpqaUVXDhdwp6u2sbW8cCk+L26H/8yu8L8VgbrCHxRPzNEmsT3dkqxewmIpjmXs2vHSdK0Qq9UD/6nUpCvN1KoViFxAJ+qoOBHaEo3OzCtAYyMpZJiqpaNAzSCAcE2xwFWcvLbWsaXcTii/P09HgxLRHxPJs3JOjIds/8r19zSK1COIed",
+        "expiration": "Jul 12, 2024, 1:51:40 PM"
+      },
+      "assumedRoleUser": {
+        "assumedRoleId": "AROASPFRN5G433BERWHCI:kyungyeol",
+        "arn": "arn:aws:sts::170023315897:assumed-role/keycloak-admin/kyungyeol"
+      },
+      "subject": "G-2237c10c-15fc-4e50-93b1-a773ac8a119d",
+      "subjectType": "transient",
+      "issuer": "https://keycloak.ktown4u.com/auth/realms/internal",
+      "audience": "https://signin.aws.amazon.com/saml",
+      "nameQualifier": "v/cMotM6T9afoI5tWd6a5os43ng="
+    },
+    "requestID": "52ead69a-293a-42fa-bbe8-464b72120a02",
+    "eventID": "a63917bb-f2fe-4f91-94f8-a8fe18c4a949",
+    "readOnly": "True",
+    "resources": [
+      {
+        "accountId": "170023315897",
+        "type": "AWS::IAM::Role",
+        "ARN": "arn:aws:iam::170023315897:role/keycloak-admin"
+      },
+      {
+        "accountId": "170023315897",
+        "type": "AWS::IAM::SAMLProvider",
+        "ARN": "arn:aws:iam::170023315897:saml-provider/keycloak"
+      }
+    ],
+    "eventType": "AwsApiCall",
+    "managementEvent": "True",
+    "recipientAccountId": "170023315897",
+    "eventCategory": "Management",
+    "tlsDetails": {
+      "tlsVersion": "TLSv1.3",
+      "cipherSuite": "TLS_AES_128_GCM_SHA256",
+      "clientProvidedHostHeader": "sts.amazonaws.com"
+    }
+  }
+}
