@@ -5,6 +5,7 @@ import requests
 
 
 def lambda_handler(event, context):
+    print(event)
     # TODO implement
     event_time = event['detail']['eventTime']
     event_account = event['detail']['recipientAccountId']
@@ -18,6 +19,7 @@ def lambda_handler(event, context):
 
     payload = {
         "channel_id": os.environ['CHANNEL_ID'],
+        "message": "aws login",
         "blocks": [
             {
                 "type": "section",
