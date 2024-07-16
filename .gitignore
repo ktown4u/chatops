@@ -40,3 +40,4 @@ terraform.rc
 
 # Ignore Serverless framework
 .serverless
+node_modules
