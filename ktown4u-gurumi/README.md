@@ -11,11 +11,18 @@ brew install python@3.9
 npm install -g serverless@3.38.0
 sls plugin install -n serverless-python-requirements
 sls plugin install -n serverless-dotenv-plugin
-python -m pip install --upgrade -r requirements.txt
+python3 -m pip install --upgrade -r requirements.txt
 # .env 파일에 토큰 반영 (ssm parameter store 참고)
 sls deploy
+# slack app에서 api gateway의 주소를 반영
+# https://api.slack.com/apps/A079YLSSNKT/event-subscriptions
 ```
 
+## update
+
+```bash
+sls deploy
+```
 ## Setup
 
 Setup a Slack app by following the guide at https://slack.dev/bolt-js/tutorial/getting-started
@@ -77,7 +84,7 @@ curl -X POST -H "Content-Type: application/json" \
     \"challenge\": \"3eZbrw1aBm2rZgRNFdxV2595E9CY3gmdALWMmHkvFXO7tYXAYM8P\", \
     \"type\": \"url_verification\" \
 }" \
-https://xxxx.execute-api.us-east-1.amazonaws.com/dev/slack/events
+https://jhz21gawvg.execute-api.us-east-1.amazonaws.com/dev/slack/events
 ```
 
 ## References
