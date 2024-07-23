@@ -19,11 +19,13 @@ SLACK_BOT_TOKEN = os.environ["SLACK_BOT_TOKEN"]
 SLACK_SIGNING_SECRET = os.environ["SLACK_SIGNING_SECRET"]
 
 # Keep track of conversation history by thread and user
-DYNAMODB_TABLE_NAME = os.environ.get("DYNAMODB_TABLE_NAME", "gurumi-ai-bot-context")
+DYNAMODB_TABLE_NAME = os.environ.get(
+    "DYNAMODB_TABLE_NAME", "gurumi-ai-bot-context")
 
 # Amazon Bedrock Model ID
 MODEL_ID_TEXT = os.environ.get("MODEL_ID_TEXT", "anthropic.claude-3")
-MODEL_ID_IMAGE = os.environ.get("MODEL_ID_IMAGE", "stability.stable-diffusion-xl")
+MODEL_ID_IMAGE = os.environ.get(
+    "MODEL_ID_IMAGE", "stability.stable-diffusion-xl")
 
 ANTHROPIC_VERSION = os.environ.get("ANTHROPIC_VERSION", "bedrock-2023-05-31")
 ANTHROPIC_TOKENS = int(os.environ.get("ANTHROPIC_TOKENS", 1024))
@@ -69,20 +71,33 @@ app = App(
 bot_id = app.client.api_call("auth.test")["user_id"]
 
 # Initialize DynamoDB
-dynamodb = boto3.resource("dynamodb")
-table = dynamodb.Table(DYNAMODB_TABLE_NAME)
+try:
+    dynamodb = boto3.resource("dynamodb")
+    table = dynamodb.Table(DYNAMODB_TABLE_NAME)
+except Exception as e:
+    print('initialize dynamodb error')
+    print(e)
 
 # Initialize the Amazon Bedrock runtime client
-bedrock = boto3.client(service_name="bedrock-runtime", region_name="us-east-1")
+try:
+    bedrock = boto3.client(service_name="bedrock-runtime",
+                           region_name="us-east-1")
+except Exception as e:
+    print('bed rock initialize error')
+    print(e)
 
 
 # Get the context from DynamoDB
 def get_context(thread_ts, user, default=""):
-    if thread_ts is None:
-        item = table.get_item(Key={"id": user}).get("Item")
-    else:
-        item = table.get_item(Key={"id": thread_ts}).get("Item")
-    return (item["conversation"]) if item else (default)
+    try:
+        if thread_ts is None:
+            item = table.get_item(Key={"id": user}).get("Item")
+        else:
+            item = table.get_item(Key={"id": thread_ts}).get("Item")
+        return (item["conversation"]) if item else (default)
+    except Exception as e:
+        print('function get_context error')
+        print(e)
 
 
 # Put the context in DynamoDB
@@ -460,31 +475,36 @@ def content_from_message(prompt, event):
 # Handle the app_mention event
 @app.event("app_mention")
 def handle_mention(body: dict, say: Say):
-    print("handle_mention: {}".format(body))
+    try:
+        print("handle_mention: {}".format(body))
 
-    event = body["event"]
+        event = body["event"]
 
-    # if "bot_id" in event and event["bot_id"] == bot_id:
-    #     # Ignore messages from the bot itself
-    #     return
+        # if "bot_id" in event and event["bot_id"] == bot_id:
+        #     # Ignore messages from the bot itself
+        #     return
 
-    channel = event["channel"]
+        channel = event["channel"]
 
-    if ALLOWED_CHANNEL_IDS != "None":
-        allowed_channel_ids = ALLOWED_CHANNEL_IDS.split(",")
-        if channel not in allowed_channel_ids:
-            # say("Sorry, I'm not allowed to respond in this channel.")
-            return
+        if ALLOWED_CHANNEL_IDS != "None":
+            allowed_channel_ids = ALLOWED_CHANNEL_IDS.split(",")
+            if channel not in allowed_channel_ids:
+                print('channel을 찾을 수 없습니다.')
+                # say("Sorry, I'm not allowed to respond in this channel.")
+                return
 
-    thread_ts = event["thread_ts"] if "thread_ts" in event else event["ts"]
-    user = event["user"]
-    client_msg_id = event["client_msg_id"]
+        thread_ts = event["thread_ts"] if "thread_ts" in event else event["ts"]
+        user = event["user"]
+        client_msg_id = event["client_msg_id"]
 
-    prompt = re.sub(f"<@{bot_id}>", "", event["text"]).strip()
+        prompt = re.sub(f"<@{bot_id}>", "", event["text"]).strip()
 
-    content = content_from_message(prompt, event)
+        content = content_from_message(prompt, event)
 
-    conversation(say, thread_ts, content, channel, user, client_msg_id)
+        conversation(say, thread_ts, content, channel, user, client_msg_id)
+    except Exception as e:
+        print('handle_mention function error')
+        print(e)
 
 
 # Handle the DM (direct message) event
@@ -512,6 +532,7 @@ def handle_message(body: dict, say: Say):
 
 # Handle the Lambda function
 def lambda_handler(event, context):
+    print(event)
     body = json.loads(event["body"])
 
     if "challenge" in body:
