@@ -420,8 +420,16 @@ def conversation(say: Say, thread_ts, content, channel, user, client_msg_id):
 
         chat_update(say, channel, thread_ts, latest_ts, f"```{e}```")
 
+    # RAG Message
+    try:
+        pass
+    except Exception as e:
+        print("RAG conversation: Error: {}".format(e))
+        chat_update(say, channel, thread_ts, latest_ts, f"```{e}```")
 
 # Get image from URL
+
+
 def get_image_from_url(image_url, token=None):
     headers = {}
     if token:
