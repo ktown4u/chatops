@@ -12,6 +12,7 @@ import io
 from slack_bolt import App, Say
 from slack_bolt.adapter.aws_lambda import SlackRequestHandler
 
+from ragHandler import retrieve
 BOT_CURSOR = os.environ.get("BOT_CURSOR", ":robot_face:")
 
 # Set up Slack API credentials
@@ -216,6 +217,12 @@ def invoke_claude_3(content):
             text = output["text"]
 
         return text
+
+        # RAG model
+        # output = retrieve(content[0]['text'])
+        # text = output['text']
+
+        # return text
 
     except Exception as e:
         print("invoke_claude_3: Error: {}".format(e))
