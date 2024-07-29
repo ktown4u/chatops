@@ -12,23 +12,22 @@ bedrock_agent_runtime = boto3.client(
 )
 
 
-def retrieve(input):
+def retrieve(query, kbId='2SKKIDNPZM', numberOfResults=20):
     print('use rag')
     try:
-        kbId = 'JRPEHTOTEI'
-        modelArn = 'anthropic.claude-3-sonnet-20240229-v1:0'
         response = bedrock_agent_runtime.retrieve_and_generate(
             input={
-                'text': input,
+                'text': query,
             },
             retrieveAndGenerateConfiguration={
                 "type": "KNOWLEDGE_BASE",
                 "knowledgeBaseConfiguration": {
-                    "knowledgeBaseId": "JRPEHTOTEI",
+                    "knowledgeBaseId": kbId,
+                    "modelArn":  'anthropic.claude-3-sonnet-20240229-v1:0',
                     "retrievalConfiguration": {
                         "vectorSearchConfiguration": {
-                            "overrideSearchType": "SEMANTIC",
-                            "numberOfResults": 5
+                            "overrideSearchType": "HYBRID",
+                            "numberOfResults": numberOfResults
                         }
                     },
                     "generationConfiguration": {}
@@ -37,6 +36,10 @@ def retrieve(input):
         )
         output = response['output']
         return output
-
     except Exception as e:
         print(f'retrieve error with {e}')
+
+
+if __name__ == "__main__":
+    query = 'hello ktown4u java에 대해 설명해줘.'
+    print(retrieve(query))
