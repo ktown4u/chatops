@@ -1,4 +1,4 @@
-service: lambda-gurumi-ai-bot
+service: lambda-porunga-ai-bot
 provider:
   name: aws
   region: us-east-1
@@ -7,7 +7,7 @@ provider:
   # memorySize: 5120
   timeout: 600
   environment:
-    DYNAMODB_TABLE_NAME: gurumi-ai-bot-context
+    DYNAMODB_TABLE_NAME: porunga-ai-bot-context
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -17,9 +17,12 @@ provider:
     - Effect: Allow
       Action:
         - bedrock:InvokeModel
+        - bedrock:RetrieveAndGenerate
+        - bedrock:Retrieve
       Resource:
         - "arn:aws:bedrock:*::foundation-model/anthropic.claude-*"
         - "arn:aws:bedrock:*::foundation-model/stability.stable-diffusion-*"
+        - "arn:aws:bedrock:us-east-1:170023315897:knowledge-base/*"
 
 functions:
   mention:
