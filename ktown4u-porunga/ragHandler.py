@@ -15,6 +15,8 @@ bedrock_agent_runtime = boto3.client(
 def retrieve(query, kbId='2SKKIDNPZM', numberOfResults=20):
     print('use rag')
     try:
+        print(kbId)
+        print(numberOfResults)
         response = bedrock_agent_runtime.retrieve_and_generate(
             input={
                 'text': query,

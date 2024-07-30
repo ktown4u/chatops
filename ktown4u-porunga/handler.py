@@ -21,7 +21,7 @@ SLACK_SIGNING_SECRET = os.environ["SLACK_SIGNING_SECRET"]
 
 # Keep track of conversation history by thread and user
 DYNAMODB_TABLE_NAME = os.environ.get(
-    "DYNAMODB_TABLE_NAME", "gurumi-ai-bot-context")
+    "DYNAMODB_TABLE_NAME", "porunga-ai-bot-context")
 
 # Amazon Bedrock Model ID
 MODEL_ID_TEXT = os.environ.get("MODEL_ID_TEXT", "anthropic.claude-3")
@@ -31,6 +31,9 @@ MODEL_ID_IMAGE = os.environ.get(
 ANTHROPIC_VERSION = os.environ.get("ANTHROPIC_VERSION", "bedrock-2023-05-31")
 ANTHROPIC_TOKENS = int(os.environ.get("ANTHROPIC_TOKENS", 1024))
 
+# Amazon Bedrock KnowledgeBase ID
+KNOWLEDGE_BASE_ID = os.environ.get("KNOWLEDGE_BASE_ID", "2SKKIDNPZM")
+NUMBER_OF_RESULTS = int(os.environ.get("NUMBER_OF_RESULTS", 20))
 # Set up the allowed channel ID
 ALLOWED_CHANNEL_IDS = os.environ.get("ALLOWED_CHANNEL_IDS", "None")
 
@@ -217,12 +220,6 @@ def invoke_claude_3(content):
             text = output["text"]
 
         return text
-
-        # RAG model
-        # output = retrieve(content[0]['text'])
-        # text = output['text']
-
-        # return text
 
     except Exception as e:
         print("invoke_claude_3: Error: {}".format(e))
@@ -422,10 +419,27 @@ def conversation(say: Say, thread_ts, content, channel, user, client_msg_id):
 
     # RAG Message
     try:
-        pass
+        if type != "image":  # RAG는 텍스트 응답에만 적용
+            # 첫 번째 응답 (Claude)을 보낸 후
+            rag_msg = say(text="추가 답변을 생성중입니다." +
+                          BOT_CURSOR, thread_ts=thread_ts)
+            rag_ts = rag_msg["ts"]
+
+            # RAG 결과 가져오기
+            rag_output = retrieve(
+                query=prompt
+            )
+            rag_text = rag_output['text']
+
+            # RAG 결과로 새 메시지 전송
+            app.client.chat_update(
+                channel=channel,
+                ts=rag_ts,
+                text=replace_text(rag_text)
+            )
     except Exception as e:
         print("RAG conversation: Error: {}".format(e))
-        chat_update(say, channel, thread_ts, latest_ts, f"```{e}```")
+        say(text=f"RAG 처리 중 오류 발생: ```{e}```", thread_ts=thread_ts)
 
 # Get image from URL
 
