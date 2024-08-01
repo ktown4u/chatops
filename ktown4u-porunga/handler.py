@@ -41,6 +41,7 @@ ENABLE_IMAGE = os.environ.get("ENABLE_IMAGE", "False")
 
 # Set up System messages
 SYSTEM_MESSAGE = os.environ.get("SYSTEM_MESSAGE", "None")
+SYSTEM_MESSAGE_FOR_RAG = os.environ.get("SYSTEM_MESSAGE_FOR_RAG", "None")
 
 MAX_LEN_SLACK = int(os.environ.get("MAX_LEN_SLACK", 3000))
 MAX_LEN_BEDROCK = int(os.environ.get("MAX_LEN_BEDROCK", 4000))
@@ -354,6 +355,7 @@ def conversation(say: Say, thread_ts, content, channel, user, client_msg_id):
             prompts = [
                 reply["content"] for reply in replies if reply["content"].strip()
             ]
+            print("get thread message {}".format(prompts))
 
         # Get the image from the message
         if type == "image" and len(content) > 1:
@@ -425,11 +427,17 @@ def conversation(say: Say, thread_ts, content, channel, user, client_msg_id):
                           BOT_CURSOR, thread_ts=thread_ts)
             rag_ts = rag_msg["ts"]
 
+            prompt = SYSTEM_MESSAGE_FOR_RAG + prompt
+            print("rag prompt {}".format(prompt))
             # RAG 결과 가져오기
             rag_output = retrieve(
                 query=prompt
             )
             rag_text = rag_output['text']
+            if 'Sorry, I am unable to assist you with this request.' in rag_text:
+                rag_text = '지식을 찾을 수 없습니다. 다시 질문해주시겠어요?'
+            else:
+                pass
 
             # RAG 결과로 새 메시지 전송
             app.client.chat_update(
