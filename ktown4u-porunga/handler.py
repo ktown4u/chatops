@@ -107,7 +107,7 @@ def get_context(thread_ts, user, default=""):
 
 # Put the context in DynamoDB
 def put_context(thread_ts, user, conversation=""):
-    expire_at = int(time.time()) + 3600  # 1h
+    expire_at = int(time.time()) + 28800  # 8h
     expire_dt = datetime.datetime.fromtimestamp(expire_at).isoformat()
     if thread_ts is None:
         table.put_item(
