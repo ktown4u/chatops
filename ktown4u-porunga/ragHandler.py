@@ -25,7 +25,7 @@ def retrieve(query, kbId='2SKKIDNPZM', numberOfResults=20):
                 "type": "KNOWLEDGE_BASE",
                 "knowledgeBaseConfiguration": {
                     "knowledgeBaseId": kbId,
-                    "modelArn":  'anthropic.claude-3-sonnet-20240229-v1:0',
+                    "modelArn":  'anthropic.claude-3-5-sonnet-20240620-v1:0',
                     "retrievalConfiguration": {
                         "vectorSearchConfiguration": {
                             "overrideSearchType": "HYBRID",
