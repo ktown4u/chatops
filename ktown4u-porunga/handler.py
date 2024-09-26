@@ -409,8 +409,9 @@ def conversation(say: Say, thread_ts, content, channel, user, client_msg_id):
             content[0]["text"] = prompt
 
             # Send the prompt to Bedrock
-            message = invoke_claude_3(content)
-
+            # message = invoke_claude_3(content)
+            retrieve_output = retrieve(query=prompt)
+            message = retrieve_output['text']
             # Update the message in Slack
             chat_update(say, channel, thread_ts, latest_ts, message)
 
@@ -420,34 +421,34 @@ def conversation(say: Say, thread_ts, content, channel, user, client_msg_id):
         chat_update(say, channel, thread_ts, latest_ts, f"```{e}```")
 
     # RAG Message
-    try:
-        if type != "image":  # RAG는 텍스트 응답에만 적용
-            # 첫 번째 응답 (Claude)을 보낸 후
-            rag_msg = say(text="추가 답변을 생성중입니다." +
-                          BOT_CURSOR, thread_ts=thread_ts)
-            rag_ts = rag_msg["ts"]
+    # try:
+    #     if type != "image":  # RAG는 텍스트 응답에만 적용
+    #         # 첫 번째 응답 (Claude)을 보낸 후
+    #         rag_msg = say(text="추가 답변을 생성중입니다." +
+    #                       BOT_CURSOR, thread_ts=thread_ts)
+    #         rag_ts = rag_msg["ts"]
 
-            prompt = SYSTEM_MESSAGE_FOR_RAG + prompt
-            print("rag prompt {}".format(prompt))
-            # RAG 결과 가져오기
-            rag_output = retrieve(
-                query=prompt
-            )
-            rag_text = rag_output['text']
-            if 'Sorry, I am unable to assist you with this request.' in rag_text:
-                rag_text = '지식을 찾을 수 없습니다. 다시 질문해주시겠어요?'
-            else:
-                pass
+    #         prompt = SYSTEM_MESSAGE_FOR_RAG + prompt
+    #         print("rag prompt {}".format(prompt))
+    #         # RAG 결과 가져오기
+    #         rag_output = retrieve(
+    #             query=prompt
+    #         )
+    #         rag_text = rag_output['text']
+    #         if 'Sorry, I am unable to assist you with this request.' in rag_text:
+    #             rag_text = '지식을 찾을 수 없습니다. 다시 질문해주시겠어요?'
+    #         else:
+    #             pass
 
-            # RAG 결과로 새 메시지 전송
-            app.client.chat_update(
-                channel=channel,
-                ts=rag_ts,
-                text=replace_text(rag_text)
-            )
-    except Exception as e:
-        print("RAG conversation: Error: {}".format(e))
-        say(text=f"RAG 처리 중 오류 발생: ```{e}```", thread_ts=thread_ts)
+    #         # RAG 결과로 새 메시지 전송
+    #         app.client.chat_update(
+    #             channel=channel,
+    #             ts=rag_ts,
+    #             text=replace_text(rag_text)
+    #         )
+    # except Exception as e:
+    #     print("RAG conversation: Error: {}".format(e))
+    #     say(text=f"RAG 처리 중 오류 발생: ```{e}```", thread_ts=thread_ts)
 
 # Get image from URL
 
