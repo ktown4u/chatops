@@ -66,7 +66,8 @@ resource "aws_opensearchserverless_access_policy" "access_policy" {
       ],
       Principal = [
         aws_iam_role.AmazonBedrockExecutionRoleForKnowledgeBase.arn,
-        data.aws_caller_identity.current.arn
+        data.aws_caller_identity.current.arn,
+        aws_iam_role.lambda_role.arn
       ]
     }
   ])

@@ -57,6 +57,11 @@ resource "aws_iam_role_policy" "lambda_invoke_bedrock_model" {
           "arn:aws:bedrock:*::foundation-model/anthropic.claude-*",
           "arn:aws:bedrock:*::foundation-model/stability.stable-diffusion-*"
         ]
+      },
+      {
+        Effect   = "Allow"
+        Action   = ["bedrock:Retrieve"]
+        Resource = "arn:aws:bedrock:${local.region}:${local.account_id}:knowledge-base/${aws_bedrockagent_knowledge_base.slack_bot_kb.id}"
       }
     ]
   })
